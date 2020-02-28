@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const User = require('../models/user')
+const User = require('../models/User')
 const jwt = require('jsonwebtoken');
 
 //! Route for signup
@@ -11,7 +11,7 @@ router.post('/signup', (req, res) => {
             // if yes, return an error
             res.json({type: 'error', message: 'Email already exists'})
         }   else {
-            // if no, create user in db addd
+            // if no, create user in db
             let user = new User ({
                 name: req.body.name,
                 email: req.body.email,
@@ -41,7 +41,7 @@ router.post('/login', (req,res) => {
             // if there is no user, return error
             res.json({type: 'error', message: 'Account not found'})
         } else {
-            // if user, check authentication checking
+            // if user, check authentication
             if (user.authenticated(req.body.password)) {
                 // if authenticated, sign a token (login)
                 var token = jwt.sign(user.toObject(), process.env.JWT_SECRET, {
@@ -83,6 +83,7 @@ router.post('/me/from/token', (req,res) => {
                         //?     expiresIn: '1d'
                         //? });
                         res.json({type: 'success', user: user.toObject(), token})
+                        // res.json({type: 'success', user, token})
                     }
                 })
             }

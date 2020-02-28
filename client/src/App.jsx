@@ -22,8 +22,8 @@ export default function App() {
     // console.log(errorMessage)
 
     const handleRoverChange = (e) => {
-      setRover(e.target.name);
-      console.log(e.target.name)
+        setRover(e.target.name);
+        console.log(e.target.name)
     };
 
     function checkForLocalToken() {
@@ -51,6 +51,7 @@ export default function App() {
             })
         }
     }
+
     function liftToken({token, user}) {
         setToken(token);
         setUser(user);
@@ -74,37 +75,37 @@ export default function App() {
                 <Signup liftToken={liftToken} />
             </div>
         )
+    } else {
+        return (
+            <Layout>
+                <h2>Hello, {user.name}</h2>
+                <Button variant='contained' onClick={logout}>Logout</Button>
+                <Comment/>
+                <img className="roverImg" 
+                    onClick={handleRoverChange} 
+                    name='curiosity' 
+                    src="https://spaceplace.nasa.gov/mars-curiosity/en/sojourner.png" 
+                    alt=""/>
+                <button onClick={handleRoverChange} 
+                    name='curiosity'>Hi! I'm Curiosity</button>
+                <img className="roverImg" 
+                    onClick={handleRoverChange} 
+                    name='opportunity' 
+                    src="https://spaceplace.nasa.gov/mars-curiosity/en/sojourner.png" 
+                    alt=""/>
+                <button onClick={handleRoverChange} 
+                    name='opportunity'>Hi! I'm Opportunity</button>
+                <img className="roverImg" 
+                    onClick={handleRoverChange} 
+                    name='spirit' 
+                    src="https://spaceplace.nasa.gov/mars-curiosity/en/sojourner.png" 
+                    alt=""/>
+                <button onClick={handleRoverChange} 
+                    name='spirit'>Hi! I'm Spirit</button>
+                <PicturesList rover={rover} handleRoverChange={handleRoverChange}/>
+            </Layout>
+        )
     }
-    return (
-        <Layout>
-            <h2>Hello, {user.name}</h2>
-            <Button variant='contained' onClick={logout}>Logout</Button>
-            <Comment/>
-            <img className="roverImg" 
-                onClick={handleRoverChange} 
-                name='curiosity' 
-                src="https://spaceplace.nasa.gov/mars-curiosity/en/sojourner.png" 
-                alt=""/>
-            <button onClick={handleRoverChange} 
-                name='curiosity'>Hi! I'm Curiosity</button>
-            <img className="roverImg" 
-                onClick={handleRoverChange} 
-                name='opportunity' 
-                src="https://spaceplace.nasa.gov/mars-curiosity/en/sojourner.png" 
-                alt=""/>
-            <button onClick={handleRoverChange} 
-                name='opportunity'>Hi! I'm Opportunity</button>
-            <img className="roverImg" 
-                onClick={handleRoverChange} 
-                name='spirit' 
-                src="https://spaceplace.nasa.gov/mars-curiosity/en/sojourner.png" 
-                alt=""/>
-            <button onClick={handleRoverChange} 
-                name='spirit'>Hi! I'm Spirit</button>
-            <PicturesList rover={rover} handleRoverChange={handleRoverChange}/>
-        </Layout>
-    )
-
 }
 
 function Layout({children, rover, handleRoverChange}) {

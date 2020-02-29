@@ -41,22 +41,18 @@ export default function App() {
 
     const classes = useStyles();
 
-    // console.log(errorMessage)
-
     const handleRoverChange = (e) => {
+        e.preventDefault()
         setRover(e.target.name);
-        console.log(e.target.name)
     };
 
     function nextPictureSet(e) {
         e.preventDefault();
-        console.log('clicked');
         setPageNum(pageNum + 1);
     }
 
     function prevPictureSet(e) {
         e.preventDefault();
-        console.log('clicked');
         setPageNum(pageNum - 1);
     }
 

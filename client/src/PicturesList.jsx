@@ -1,16 +1,15 @@
-import React, {useState} from 'react'
+import React, {useState, useEffect} from 'react'
 import './App.css';
-// import axios from 'axios';
+import axios from 'axios';
 
-function PicturesList({rover, handleRoverChange}) {
-    
-    const [pictures] = useState([]);
+function PicturesList({rover, handleRoverChange, pageNum}) {
+    const [pictures, setPictures] = useState([]);
 
-    // useEffect(() => {
-    //     axios.get(`https://api.nasa.gov/mars-photos/api/v1/rovers/${rover}/photos?sol=1000&page=1&api_key=lwwON4lcFqWw0zXubbcETbUPjgEtP3st0LT6d2no`).then((response) => {
-    //         setPictures(response.data.photos);
-    //     }) 
-    // }, [rover])
+    useEffect(() => {
+        axios.get(`https://api.nasa.gov/mars-photos/api/v1/rovers/${rover}/photos?sol=1000&page=${pageNum}&api_key=lwwON4lcFqWw0zXubbcETbUPjgEtP3st0LT6d2no`).then((response) => {
+            setPictures(response.data.photos);
+        }) 
+    }, [rover, pageNum])
 
     let content;
     if (pictures.length) {

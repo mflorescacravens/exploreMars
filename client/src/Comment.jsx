@@ -3,6 +3,7 @@ import React, {useState, useEffect} from 'react';
 import axios from 'axios';
 import './App.css';
 // import Edit from './Edit'
+import TextField from '@material-ui/core/TextField';
 
 function Comment() {
     
@@ -47,7 +48,15 @@ function Comment() {
             <div>
                 <h3>enter a comment below</h3>
                 <form onSubmit={handleCommentSubmit} action="POST">
-                    <textarea name="comment" onSubmit={setNewComment} cols="80" rows="5"></textarea>
+                    {/* <textarea name="comment" onSubmit={setNewComment} cols="80" rows="5"></textarea> */}
+                    <TextField
+                        id="outlined-multiline-static"
+                        label="Add Comment..."
+                        multiline
+                        rows="4"
+                        variant="outlined"
+                        placeholder="Insert comment here..."
+                        onSubmit={setNewComment}/>
                     <br/>
                     <button>Submit</button>
                 </form>
@@ -56,13 +65,13 @@ function Comment() {
         )
     }
 
-   if (!comments) {
-       return (<CommentForm><p>Click a rover to see pictures!</p></CommentForm>)
-   }
+    if (!comments) {
+        return (<CommentForm><p>Click a rover to see pictures!</p></CommentForm>)
+    }
 
-   return (
+    return (
         <CommentForm>
-           {comments.map((comments, id) => {
+            {comments.map((comments, id) => {
                 return  <div onClick={handleDeleteComment(id)}>
                             <p alt='roverComments' 
                                 className='rover-comments' 

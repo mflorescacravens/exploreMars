@@ -1,4 +1,5 @@
 import React, {useState, useEffect} from 'react';
+import { makeStyles } from '@material-ui/core/styles';
 import axios from 'axios';
 import './App.css';
 import Comment from './Comment'
@@ -6,11 +7,29 @@ import PicturesList from './PicturesList';
 import Login from './Login';
 import Signup from './Signup';
 import Button from '@material-ui/core/Button';
+import AppBar from '@material-ui/core/AppBar';
+import Toolbar from '@material-ui/core/Toolbar';
+import IconButton from '@material-ui/core/IconButton';
+import MenuIcon from '@material-ui/icons/Menu';
+import Typography from '@material-ui/core/Typography';
+
 // import { set } from 'mongoose';
 
 // todo: get comments to be editable
 // todo: get pictures to change status on rover change
 // todo: get comments to be associated with rover
+
+const useStyles = makeStyles(theme => ({
+    root: {
+        flexGrow: 1,
+    },
+    menuButton: {
+        marginRight: theme.spacing(2),
+    },
+    title: {
+        flexGrow: 1,
+    },
+}));
 
 
 export default function App() {
@@ -18,6 +37,9 @@ export default function App() {
     const [user, setUser] = useState(null);
     const [errorMessage, setErrorMessage] = useState('')
     const [rover, setRover] = useState('curiosity');
+    const [pageNum, setPageNum] = useState(1);
+
+    const classes = useStyles();
 
     // console.log(errorMessage)
 
@@ -25,6 +47,30 @@ export default function App() {
         setRover(e.target.name);
         console.log(e.target.name)
     };
+
+    function nextPictureSet(e) {
+        e.preventDefault();
+        console.log('clicked');
+        setPageNum(pageNum + 1);
+    }
+
+    function prevPictureSet(e) {
+        e.preventDefault();
+        console.log('clicked');
+        setPageNum(pageNum - 1);
+    }
+
+    var picturePage;
+    if (pageNum === 1) {
+        picturePage =   <div>
+                            <Button variant='contained' onClick={nextPictureSet}>Next Page</Button>
+                        </div>
+    } else {
+        picturePage =   <div>
+                            <Button variant='contained' onClick={prevPictureSet}>Previous Page</Button>
+                            <Button variant='contained' onClick={nextPictureSet}>Next Page</Button>
+                        </div>
+    }
 
     function checkForLocalToken() {
         var token = localStorage.getItem('mernToken');
@@ -78,9 +124,18 @@ export default function App() {
     } else {
         return (
             <Layout>
-                <h2>Hello, {user.name}</h2>
-                <Button variant='contained' onClick={logout}>Logout</Button>
-                <Comment/>
+                <AppBar position="static">
+                    <Toolbar>
+                        {/* <IconButton edge="start" className={classes.menuButton} color="inherit" aria-label="menu">
+                        <MenuIcon />
+                        </IconButton> */}
+                        <Typography variant="h6" className={classes.title}>
+                        Welcome, {user.name}! Explore Mars 👽
+                        </Typography>
+                        <Button color="inherit" onClick={logout}>Logout</Button>
+                    </Toolbar>
+                </AppBar>
+                <h4>You're looking at the rover: <span className='roverFeed'>{rover}</span></h4>
                 <img className="roverImg" 
                     onClick={handleRoverChange} 
                     name='curiosity' 
@@ -102,19 +157,19 @@ export default function App() {
                     alt=""/>
                 <button onClick={handleRoverChange} 
                     name='spirit'>Hi! I'm Spirit</button>
-                <PicturesList rover={rover} handleRoverChange={handleRoverChange}/>
+                <PicturesList pageNum={pageNum} rover={rover} handleRoverChange={handleRoverChange}/>
+                {/* <Comment/> */}
+                {picturePage}
             </Layout>
         )
     }
 }
 
-function Layout({children, rover, handleRoverChange}) {
+function Layout({children}, props) {
     return (
         <div className="App">
-            <h1>Rover Mars</h1>
-            <h3>click a rover to view pictures</h3>
-            <h4>You're looking at the rover: <span className='roverFeed'>{rover}</span></h4>
             {children}
+            {/* <h3>click a rover to view pictures</h3> */}
         </div>
     );
 }

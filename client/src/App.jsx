@@ -57,6 +57,14 @@ export default function App() {
     }
 
     var picturePage;
+
+    useEffect(() => {
+        if (rover !== 'curiosity') {
+            setPageNum(1);
+            picturePage = '.';
+        }
+    }, [rover])
+    
     if (pageNum === 1) {
         picturePage =   <div>
                             <Button variant='contained' onClick={nextPictureSet}>Next Page</Button>

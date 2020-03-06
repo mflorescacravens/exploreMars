@@ -29,6 +29,10 @@ const useStyles = makeStyles(theme => ({
     title: {
         flexGrow: 1,
     },
+    picturePage: {
+        marginTop: 20,
+        marginBottom: 20,
+    }
 }));
 
 
@@ -64,9 +68,9 @@ export default function App() {
             picturePage = '.';
         }
     }, [rover])
-    
+
     if (pageNum === 1) {
-        picturePage =   <div>
+        picturePage =   <div className={classes.picturePage}>
                             <Button variant='contained' onClick={nextPictureSet}>Next Page</Button>
                         </div>
     } else {
@@ -130,9 +134,6 @@ export default function App() {
             <Layout>
                 <AppBar position="static">
                     <Toolbar>
-                        {/* <IconButton edge="start" className={classes.menuButton} color="inherit" aria-label="menu">
-                        <MenuIcon />
-                        </IconButton> */}
                         <Typography variant="h6" className={classes.title}>
                         Welcome, {user.name}! Explore Mars 👽
                         </Typography>
@@ -162,7 +163,7 @@ export default function App() {
                 <button onClick={handleRoverChange} 
                     name='spirit'>Hi! I'm Spirit</button>
                 <PicturesList pageNum={pageNum} rover={rover} handleRoverChange={handleRoverChange}/>
-                {/* <Comment/> */}
+                <Comment/>
                 {picturePage}
             </Layout>
         )
@@ -173,7 +174,6 @@ function Layout({children}, props) {
     return (
         <div className="App">
             {children}
-            {/* <h3>click a rover to view pictures</h3> */}
         </div>
     );
 }

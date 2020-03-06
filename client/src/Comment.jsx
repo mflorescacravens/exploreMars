@@ -12,25 +12,31 @@ function Comment() {
     
     const handleDeleteComment = (id) => (e) => {
         e.preventDefault();
-        axios.delete(`/comments/${comments[id]._id}`, () => {});
+        axios.delete(`/comments/${comments[id]._id}`, () => {}).then(axios.get('/comments').then((response) => {
+            setComments(response.data);
+        }));
     }
     
     const handleCommentSubmit = (e) => {
         e.preventDefault();
-        setNewComment(e.target.comment.value)
+        var fieldVal = document.getElementById('outlined-multiline-static').value;
+        if (fieldVal !== "") {
+            setNewComment(fieldVal)
+        }
     }
 
     // const handleEditComment = (id) => (e) => {
     //     e.preventDefault();
-    //     axios.put(`/comments/${comments[id]._id}`, () => {})
+    //     // axios.put(`/comments/${comments[id]._id}`, () => {})
+    //     console.log(e.target)
     // }
     
     useEffect(() => {
         if (newComment !== "") {
             axios.post('/comments', {
-                comment: newComment,
-                like: false
+                comment: newComment
             })
+            console.log('newComment is !blank')
         }
     }, [newComment]);
 
@@ -38,7 +44,7 @@ function Comment() {
         axios.get('/comments').then((response) => {
             setComments(response.data);
         })
-    }, [])
+    }, [newComment])
 
 
 
@@ -48,7 +54,6 @@ function Comment() {
             <div>
                 <h3>enter a comment below</h3>
                 <form onSubmit={handleCommentSubmit} action="POST">
-                    {/* <textarea name="comment" onSubmit={setNewComment} cols="80" rows="5"></textarea> */}
                     <TextField
                         id="outlined-multiline-static"
                         label="Add Comment..."

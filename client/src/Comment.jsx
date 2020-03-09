@@ -4,6 +4,7 @@ import axios from 'axios';
 import './App.css';
 // import Edit from './Edit'
 import TextField from '@material-ui/core/TextField';
+import Button from '@material-ui/core/Button';
 
 function Comment() {
     
@@ -25,18 +26,20 @@ function Comment() {
         }
     }
 
-    // const handleEditComment = (id) => (e) => {
-    //     e.preventDefault();
-    //     // axios.put(`/comments/${comments[id]._id}`, () => {})
-    //     console.log(e.target)
-    // }
-    
+    const handleEditComment = (id) => (e) => {
+        e.preventDefault();
+        // var fieldVal = document.getElementById('')
+        axios.put(`/comments/${comments[id]._id}`, {
+            comment: 'hey'
+        }).then(axios.get('/comments').then((response) => {
+            setComments(response.data);
+        }));
+    }
     useEffect(() => {
         if (newComment !== "") {
             axios.post('/comments', {
                 comment: newComment
             })
-            console.log('newComment is !blank')
         }
     }, [newComment]);
 
@@ -77,12 +80,13 @@ function Comment() {
     return (
         <CommentForm>
             {comments.map((comments, id) => {
-                return  <div onClick={handleDeleteComment(id)}>
+                return  <div>
                             <p alt='roverComments' 
                                 className='rover-comments' 
                                 key={comments.id_}>{comments.comment}</p>
-                            {/* <button action="PUT">edit</button> */}
-                            <button action="DELETE">delete</button>
+                            <Button onClick={handleEditComment(id)}>edit</Button>
+                            {/* <Edit /> */}
+                            <Button onClick={handleDeleteComment(id)}>delete</Button>
                         </div>
             })}
         </CommentForm>

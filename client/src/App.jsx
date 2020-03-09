@@ -32,6 +32,10 @@ const useStyles = makeStyles(theme => ({
     picturePage: {
         marginTop: 20,
         marginBottom: 20,
+    },
+    roverFeed: {
+        color: 'blue',
+        fontSize: 26,
     }
 }));
 
@@ -140,7 +144,7 @@ export default function App() {
                         <Button color="inherit" onClick={logout}>Logout</Button>
                     </Toolbar>
                 </AppBar>
-                <h4>You're looking at the rover: <span className='roverFeed'>{rover}</span></h4>
+                <h4>You're looking at: <span className={classes.roverFeed}>{rover}</span></h4>
                 <img className="roverImg" 
                     onClick={handleRoverChange} 
                     name='curiosity' 

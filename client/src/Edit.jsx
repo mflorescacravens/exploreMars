@@ -3,19 +3,23 @@ import React, {useState} from 'react';
 
 function Edit({comment, edit, onSubmit}) {
 
-    const[editComment, setEditComment] = useState(comment);
+    const [editComment, setEditComment] = useState(comment);
+    const [editToggle, setEditToggle] = useState(false);
     
     const handleEditComment = (e) => {
         e.preventDefault();
         setEditComment(e.target.value)
     }
+    const toggleEdit = (e) => {
+        e.preventDefault();
+        setEditToggle(!true);
+        console.log(editToggle);
+    }
 
     return(
         <div>
-            {/* <form onSubmit={onSubmit(edit)}> */}
-                <textarea name="edit" id="" cols="30" rows="10">{editComment}</textarea>
-                {/* <button onClick={onSubmit(edit)}>submit edit</button> */}
-            {/* </form> */}
+            <textarea name="edit" id="" cols="30" rows="1">{editComment}</textarea>
+            <button onClick={toggleEdit}>Edit</button>
         </div>
     )
 }

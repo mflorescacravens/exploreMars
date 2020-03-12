@@ -5,7 +5,9 @@ const expressJWT = require('express-jwt');
 const helmet = require('helmet');
 const RateLimit = require('express-rate-limit');
 const user = require('./models/User');
-const Comment = require('./models/Comment')
+const Comment = require('./models/Comment');
+const moment = require('moment');
+
 
 // const models = require('./models')
 const app = express();
@@ -57,9 +59,11 @@ app.get('/comments/:id', (req, res) => {
 //! POST a comment
 
 app.post('/comments', (req,res) => {
+    var curDate = moment().format('MMMM Do YYYY, h:mm:ss a');
     Comment.create({
         comment: req.body.comment,
-        like: req.body.like
+        date: curDate,
+        user: req.body.user,
     }, function(err, comment) {
         res.json(comment)
     })
@@ -87,7 +91,7 @@ app.get("/comments/:id", (req, res) => {
 app.put('/comments/:id', (req, res) => {
     Comment.findByIdAndUpdate(req.params.id, {
         comment: req.body.comment,
-        like: req.body.like
+
     }, function(err, comment) {
         if (err) res.json(err)
         res.json(comment)

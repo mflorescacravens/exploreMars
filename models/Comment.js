@@ -1,8 +1,11 @@
 const mongoose = require('mongoose');
 
 const commentSchema = new mongoose.Schema({
+    user: Object,
     comment: String,
-    like: Boolean
+    date: {
+        type: String
+    }
 })
 
 // commentSchema.pre('save', function(next) {

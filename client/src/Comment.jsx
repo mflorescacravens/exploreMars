@@ -2,12 +2,30 @@ import React, {useState, useEffect} from 'react';
 // import _ from 'lodash';
 import axios from 'axios';
 import './App.css';
-// import Edit from './Edit'
+import { makeStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
+import Paper from '@material-ui/core/Paper';
+import moment from 'moment';
 
-function Comment() {
-    
+const useStyles = makeStyles(theme => ({
+    commentBox: {
+        display: 'absolute',
+        flexWrap: 'wrap',
+        '& > *': {
+            margin: theme.spacing(1),
+            width: theme.spacing(36),
+            height: theme.spacing(16),
+        },
+    },
+    commentContent: {
+        marginTop: theme.spacing(2),
+    }
+}));
+const curDate = moment().format('MMMM Do YYYY, h:mm:ss a');
+
+function Comment(props) {
+    const classes = useStyles();
     const [comments, setComments] = useState();
     const [newComment, setNewComment] = useState('');
     
@@ -30,7 +48,8 @@ function Comment() {
         e.preventDefault();
         // var fieldVal = document.getElementById('')
         axios.put(`/comments/${comments[id]._id}`, {
-            comment: 'hey'
+            comment: 'hey',
+            date: curDate,
         }).then(axios.get('/comments').then((response) => {
             setComments(response.data);
         }));
@@ -38,7 +57,8 @@ function Comment() {
     useEffect(() => {
         if (newComment !== "") {
             axios.post('/comments', {
-                comment: newComment
+                comment: newComment,
+                user: props.user
             })
         }
     }, [newComment]);
@@ -80,13 +100,16 @@ function Comment() {
     return (
         <CommentForm>
             {comments.map((comments, id) => {
-                return  <div>
-                            <p alt='roverComments' 
-                                className='rover-comments' 
-                                key={comments.id_}>{comments.comment}</p>
-                            <Button onClick={handleEditComment(id)}>edit</Button>
-                            {/* <Edit /> */}
-                            <Button onClick={handleDeleteComment(id)}>delete</Button>
+                return  <div className={classes.commentBox}>
+                            <Paper elevation={3}>
+                                <p  alt='roverComments' 
+                                    className={classes.commentContent}
+                                    key={comments.id_}>{comments.comment}</p>
+                                <p>{comments.date}</p>
+                                <p>User: {comments.user.name}</p>
+                                <Button onClick={handleEditComment(id)}>edit</Button>
+                                <Button onClick={handleDeleteComment(id)}>delete</Button>
+                            </Paper>
                         </div>
             })}
         </CommentForm>

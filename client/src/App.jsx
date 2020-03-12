@@ -9,8 +9,8 @@ import Signup from './Signup';
 import Button from '@material-ui/core/Button';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
-import IconButton from '@material-ui/core/IconButton';
-import MenuIcon from '@material-ui/icons/Menu';
+import Switch from '@material-ui/core/Switch';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Typography from '@material-ui/core/Typography';
 
 // import { set } from 'mongoose';
@@ -36,6 +36,9 @@ const useStyles = makeStyles(theme => ({
     roverFeed: {
         color: 'blue',
         fontSize: 26,
+    },
+    toggleSwitch: {
+        marginLeft: 30,
     }
 }));
 
@@ -46,6 +49,10 @@ export default function App() {
     const [errorMessage, setErrorMessage] = useState('')
     const [rover, setRover] = useState('curiosity');
     const [pageNum, setPageNum] = useState(1);
+    const [checked, setChecked] = useState(false);
+    const toggleChecked = () => {
+        setChecked(prev => !prev);
+    };
 
     const classes = useStyles();
 
@@ -82,6 +89,13 @@ export default function App() {
                             <Button variant='contained' onClick={prevPictureSet}>Previous Page</Button>
                             <Button variant='contained' onClick={nextPictureSet}>Next Page</Button>
                         </div>
+    }
+
+    if (checked === true) {
+        document.body.style.backgroundColor = '#1f263b';
+        
+    } else {
+        document.body.style.backgroundColor = 'white';
     }
 
     function checkForLocalToken() {
@@ -138,13 +152,17 @@ export default function App() {
             <Layout>
                 <AppBar position="static">
                     <Toolbar>
+                        <FormControlLabel
+                            control={<Switch checked={checked} onChange={toggleChecked} className={classes.toggleSwitch} />}
+                            label="Dark Mode"
+                        />
                         <Typography variant="h6" className={classes.title}>
                         Welcome, {user.name}! Explore Mars 👽
                         </Typography>
                         <Button color="inherit" onClick={logout}>Logout</Button>
                     </Toolbar>
                 </AppBar>
-                <h4>You're looking at: <span className={classes.roverFeed}>{rover}</span></h4>
+                <h4 id="testing">You're looking at: <span className={classes.roverFeed}>{rover}</span></h4>
                 <img className="roverImg" 
                     onClick={handleRoverChange} 
                     name='curiosity' 
@@ -157,7 +175,7 @@ export default function App() {
                     name='opportunity' 
                     src="https://spaceplace.nasa.gov/mars-curiosity/en/sojourner.png" 
                     alt=""/>
-                <button onClick={handleRoverChange} 
+                <button onClick={handleRoverChange}
                     name='opportunity'>Hi! I'm Opportunity</button>
                 <img className="roverImg" 
                     onClick={handleRoverChange} 
@@ -167,7 +185,7 @@ export default function App() {
                 <button onClick={handleRoverChange} 
                     name='spirit'>Hi! I'm Spirit</button>
                 <PicturesList pageNum={pageNum} rover={rover} handleRoverChange={handleRoverChange}/>
-                <Comment/>
+                <Comment user={user}/>
                 {picturePage}
             </Layout>
         )
@@ -176,7 +194,7 @@ export default function App() {
 
 function Layout({children}, props) {
     return (
-        <div className="App">
+        <div className="App" id="application">
             {children}
         </div>
     );
